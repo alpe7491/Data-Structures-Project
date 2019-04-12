@@ -8,3 +8,5 @@ class Restaurant
   public:
   private:
 };
+
+#endif
