@@ -95,6 +95,19 @@ void Time::printTime()
 
 // int main()
 // {
+//   Time time1;
+//   Time time2;
+//   time2.addTime(30);
+//   if(time1.getTime()==time2.getTime())
+//   {
+//     cout << "Times are equal" << endl;
+//   }
+//   else cout <<"Times are not equal" << endl;
+//   return 0;
+// }
+
+// int main()
+// {
 //   Time time;
 //   time.printTime();
 //   time.startNewDay();
