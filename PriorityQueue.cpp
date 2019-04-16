@@ -1,4 +1,5 @@
 #include "PriorityQueue.hpp"
+#include "Time.hpp"
 #include <iostream>
 #include <string>
 
@@ -17,7 +18,7 @@ PriorityQueue::~PriorityQueue(){
   delete[] priorityQueue;
 }
 // Purpose: enqueue new group into priority queue; call other
-void PriorityQueue::enqueue(std::string _groupName, int _groupSize, int _cookingTime){
+void PriorityQueue::enqueue(std::string _groupName, int _groupSize, Time _arrivalTime, bool reservation){
   if(isFull())
   {
     cout << "Heap full, cannot enqueue" << endl;
@@ -29,7 +30,10 @@ void PriorityQueue::enqueue(std::string _groupName, int _groupSize, int _cooking
     int index = currentQueueSize-1;
     priorityQueue[index].groupName = _groupName;
     priorityQueue[index].groupSize = _groupSize;
-    priorityQueue[index].cookingTime = _cookingTime;
+    priorityQueue[index].arrivalTime = _arrivalTime;
+    // if(reservation){
+    //   priorityQueue[index.arrivalTime]
+    // }
   }
   repairUpward(currentQueueSize-1);
 }
@@ -47,24 +51,46 @@ void PriorityQueue::dequeue(){
     priorityQueue[0] = priorityQueue[index];
     priorityQueue[index].groupName = "";
     priorityQueue[index].groupSize = 0;
-    priorityQueue[index].cookingTime = 0;
   }
   repairDownward(0);
 }
-// return: groupID of the group at the front of the priority queue
-GroupNode PriorityQueue::peek(){
+// Purpose: remove all groups from the que;
+void PriorityQueue::clearQue(){
   if(isEmpty())
   {
-    GroupNode empty;
-    empty.groupName = "";
-    empty.groupSize = 0;
-    empty.cookingTime = 0;
-    cout << "Heap empty, nothing to peek" << endl;
+    cout << "Heap empty, cannot dequeue" << endl;
+    return;
+  }
+  else
+  {
+    while(currentQueueSize != 0){
+      currentQueueSize--;
+      int index = currentQueueSize;
+      priorityQueue[0] = priorityQueue[index];
+      priorityQueue[index].groupName = "";
+      priorityQueue[index].groupSize = 0;
+    }
+  }
+}
+// return: groupID of the group at the front of the priority queue
+GroupNode *PriorityQueue::peek(){
+  if(isEmpty())
+  {
+    GroupNode *empty;
+    Time noTime;
+    empty->groupName = "";
+    empty->groupSize = 0;
+    empty->arrivalTime = noTime;
+    cout << "No parties are qued" << endl;
     return empty;
   }
   else
   {
-    return priorityQueue[0];
+    GroupNode *temp = new GroupNode;
+    temp->groupName = priorityQueue[0].groupName;
+    temp->groupSize = priorityQueue[0].groupSize;
+    temp->arrivalTime = priorityQueue[0].arrivalTime;
+    return temp;
   }
 }
 //return: true if queue is full, false otherwise
@@ -90,21 +116,24 @@ bool PriorityQueue::isEmpty(){
   }
 }
 
+
+
 // Private
 
 // Helper: check priority
 bool checkPriority(GroupNode parent, GroupNode child){ //return true for parent, flase for child
-  if(parent.groupSize < child.groupSize){
+  if(parent.arrivalTime.getTime() < child.arrivalTime.getTime()){
     return true;
   }
-  if(parent.groupSize == child.groupSize){
-    if(parent.cookingTime < child.cookingTime){
+  if(parent.arrivalTime.getTime() == child.arrivalTime.getTime()){
+    if(parent.groupSize < child.groupSize){
       return true;
     }
     return false;
   }
   return false;
 }
+
 //Purpose: maintain heap properties by swapping node with parent if necessary
 void PriorityQueue::repairUpward(int nodeIndex){
   int parent = (nodeIndex-1)/2;
@@ -136,27 +165,5 @@ void PriorityQueue::repairDownward(int nodeIndex){
   if(smallest != nodeIndex){
     swap(priorityQueue[nodeIndex], priorityQueue[smallest]);
     repairDownward(smallest);
-  }
-}
-
-// Purpose: calculate how long a parties order will take to cook
-int PriorityQueue::calcCookTime(string order[]){
-  int cookTime = 0;
-  for (int i=0; i<groupSize; i++){
-    if(order[i] == "Steak"){
-      cookTime = cookTime + 5;
-    }
-    else if(order[i] == "Chicken"){
-      cookTime = cookTime + 2;
-    }
-    else if(order[i] == "Pork"){
-      cookTime = cookTime + 4;
-    }
-    else if(order[i] == "Soup"){
-      cookTime = cookTime + 1;
-    }
-    else if(order[i] == "Salad"){
-      cookTime = cookTime + 1;
-    }
   }
 }
