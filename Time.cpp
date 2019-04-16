@@ -97,12 +97,17 @@ void Time::printTime()
 // {
 //   Time time1;
 //   Time time2;
-//   time2.addTime(30);
 //   if(time1.getTime()==time2.getTime())
 //   {
 //     cout << "Times are equal" << endl;
 //   }
 //   else cout <<"Times are not equal" << endl;
+//   time2.addTime(30);
+//   if(time1.getTime()<time2.getTime())
+//   {
+//     cout << "Time 1 is earlier" << endl;
+//   }
+//   else cout <<"Time 2 is earlier " << endl;
 //   return 0;
 // }
 
