@@ -16,6 +16,8 @@ struct Table
 {
   int tableNumber;
   int size;
+  Time leaveTime; //only relevant if the table has a group at it
+  float bill = 0; //add to profit and reset to 0 every time a group leaves
   GroupNode* group = 0;
   Table* next = 0;
 };
@@ -23,7 +25,6 @@ struct Table
 class Restaurant
 {
   public:
-
     Restaurant(string);
     ~Restaurant();
     bool addTime(int);

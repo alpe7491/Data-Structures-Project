@@ -55,7 +55,6 @@ int main()
           //take orders
           //serve food
         }
-        restaurant.checkClock();
         break;
       case 4:
         restaurant.endOfNight();
