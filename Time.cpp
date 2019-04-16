@@ -23,7 +23,7 @@ bool Time::addTime(int numMins)
   {
     addOneMinute();
   }
-  if(getTime()>"24:00") return false;
+  if(getTime()>="24:00") return false;
   else return true;
 }
 bool Time::subtractTime(int numMins)
@@ -34,7 +34,7 @@ bool Time::subtractTime(int numMins)
     numMins-=60;
   }
   minute-=numMins;
-  if(getTime()<"00:00") return false;
+  if(getTime()<="00:00") return false;
   else return true;
 }
 

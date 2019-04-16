@@ -33,6 +33,7 @@ class PriorityQueue
     bool isFull();
     // return: true if queue is empty, false otherwise
     bool isEmpty();
+    int getSize();
 
     private:
     //Purpose: maintain heap properties by swapping node with parent if necessary

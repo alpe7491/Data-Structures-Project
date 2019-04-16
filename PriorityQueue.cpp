@@ -28,12 +28,12 @@ void PriorityQueue::enqueue(std::string _groupName, int _groupSize, Time _arriva
   {
     currentQueueSize++;
     int index = currentQueueSize-1;
+    if(reservation){
+      _arrivalTime.subtractTime(30);
+    }
     priorityQueue[index].groupName = _groupName;
     priorityQueue[index].groupSize = _groupSize;
     priorityQueue[index].arrivalTime = _arrivalTime;
-    // if(reservation){
-    //   priorityQueue[index.arrivalTime]
-    // }
   }
   repairUpward(currentQueueSize-1);
 }
@@ -114,6 +114,11 @@ bool PriorityQueue::isEmpty(){
   {
     return false;
   }
+}
+
+int PriorityQueue::getSize()
+{
+  return currentQueueSize;
 }
 
 

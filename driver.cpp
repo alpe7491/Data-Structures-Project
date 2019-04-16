@@ -33,9 +33,36 @@ int main()
   getline(cin, input);
   Restaurant restaurant(input);
   do {
-    printTurnMenu(restaurant.checkClock());
-    cin >> selection;
-    cout << endl;
+    do {
+      printTurnMenu(restaurant.checkClock());
+      cin >> selection;
+      cout << endl;
+    } while(!inputValidation(selection,1,5));
+    switch(stoi(selection))
+    {
+      case 1:
+        cout << "Adding a new customer" << endl;
+        break;
+      case 2:
+        restaurant.checkInventory();
+        break;
+      case 3:
+        if(!restaurant.addTime(15)) restaurant.endOfNight();
+        else
+        {
+          //people pay and leave
+          //seat people
+          //take orders
+          //serve food
+        }
+        restaurant.checkClock();
+        break;
+      case 4:
+        restaurant.endOfNight();
+        break;
+      default:
+        break;
+    }
   } while(selection!="5");
 
 }

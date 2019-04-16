@@ -1,6 +1,6 @@
 #include <iostream>
 #include "Time.hpp"
-// #include "PriorityQueue.hpp"
+#include "PriorityQueue.hpp"
 #include "Restaurant.hpp"
 #include <iomanip>
 using namespace std;
@@ -20,6 +20,8 @@ void printFoodMenu()
 
 
 // PUBLIC CLASS FUNCTIONS
+
+// Constructor
 Restaurant::Restaurant(string name)
 {
   restaurantName = name;
@@ -44,38 +46,17 @@ Restaurant::Restaurant(string name)
   clock.printTime(); cout << endl;
 
 }
+
+//Destructor
 Restaurant::~Restaurant()
 {
   endOfNight();
   cout << restaurantName << " is now closed for business." << endl;
 }
-Time Restaurant::checkClock()
-{
-  return clock;
-}
-void Restaurant::addTime(int)
-{
 
-}
-void Restaurant::seatGroups()
+void Restaurant::checkInventory()
 {
-
-}
-float Restaurant::getProfit()
-{
-  return nightlyProfit;
-}
-float Restaurant::getTotalProfit()
-{
-  return totalProfit;
-}
-
-// PRIVATE CLASS FUNCTIONS
-void Restaurant::endOfNight()
-{
-  cout << restaurantName << " has closed for the night -- ";
-  clock.printTime();
-  cout << "End of Night Inventory:" << endl;
+  cout << "Inventory:" << endl;
   for(int i=0; i<5; i++)
   {
     cout << "    " << food[i].name << ": " << food[i].inventory;
@@ -83,6 +64,51 @@ void Restaurant::endOfNight()
   cout << endl;
   cout << fixed << setprecision(2) << "Tonight's profit: $" << getProfit() << ", profit so far: $" << getTotalProfit() << endl << endl;
 }
+
+// returns clock
+Time Restaurant::checkClock()
+{
+  return clock;
+}
+
+// increments time
+bool Restaurant::addTime(int numMins)
+{
+  if(clock.addTime(numMins)) return true;
+  else return false;
+}
+
+// seats as many groups as possible from the front of the waitlist
+void Restaurant::seatGroups()
+{
+
+}
+
+// returns the profit for the night
+float Restaurant::getProfit()
+{
+  return nightlyProfit;
+}
+
+// returns the profit so far
+float Restaurant::getTotalProfit()
+{
+  return totalProfit;
+}
+
+// tallies totals for the night and starts the next day
+void Restaurant::endOfNight()
+{
+  cout << restaurantName << " has closed for the night -- ";
+  clock.printTime();
+  checkInventory();
+  clock.startNewDay();
+}
+
+// PRIVATE CLASS FUNCTIONS
+
+
+// seats a single group. If one is successfully seated, will return true so we can try to seat the next one too
 bool Restaurant::seatGroup()
 {
 
