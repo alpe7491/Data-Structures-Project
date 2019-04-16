@@ -9,7 +9,8 @@ class Time
   public:
     Time();
     ~Time();
-    void addTime(int numMins);
+    bool addTime(int numMins);
+    bool subtractTime(int numMins);
     void startNewDay();
     string getTime();
     string getDay();
@@ -23,7 +24,6 @@ class Time
     int minute;
 };
 
-const int CLOSING_TIME = 23;
 const int OPEN_TIME = 16;
 const string START_DAY = "Sun";
 

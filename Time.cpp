@@ -16,14 +16,29 @@ Time::~Time()
 
 }
 
-void Time::addTime(int numMins)
+// adds a number of minutes. Returns true if new time is before midnight, false if after midnight
+bool Time::addTime(int numMins)
 {
   for(int i=0; i<numMins; i++)
   {
     addOneMinute();
   }
+  if(getTime()>"24:00") return false;
+  else return true;
+}
+bool Time::subtractTime(int numMins)
+{
+  while(numMins>minute)
+  {
+    hour--;
+    numMins-=60;
+  }
+  minute-=numMins;
+  if(getTime()<"00:00") return false;
+  else return true;
 }
 
+// increments to the next day of the week, starts again at the time the restaurant is set to open
 void Time::startNewDay()
 {
   if(day=="Mon") day = "Tue";
@@ -37,6 +52,7 @@ void Time::startNewDay()
   minute = 0;
 }
 
+// returns a string containg hours:minutes in 24hr time. May be compared to other times to see which is earlier
 string Time::getTime()
 {
   string zero = "0";
@@ -48,11 +64,13 @@ string Time::getTime()
   return _hour+colon+_minute;
 }
 
+// returns a string with the current day of the week
 string Time::getDay()
 {
   return day;
 }
 
+// adds one minute. Used repeatedly in public addTime() function. Adds an hour if minutes pass 59
 void Time::addOneMinute()
 {
   if(minute==59)
@@ -66,19 +84,13 @@ void Time::addOneMinute()
   }
 }
 
+// adds an hour
 void Time::addOneHour()
 {
-  if(hour==CLOSING_TIME)
-  {
-    startNewDay();
-    hour = 0;
-  }
-  else
-  {
-    hour++;
-  }
+  hour++;
 }
 
+// sets time
 void Time::setTime(string _day, int _hour, int _minute)
 {
   day = _day;
@@ -86,12 +98,17 @@ void Time::setTime(string _day, int _hour, int _minute)
   minute = _minute;
 }
 
+// prints day of the week and current time in 24hr hours:minutes format
 void Time::printTime()
 {
   cout << getDay() << " " << getTime() << endl;
 }
 
-// main function with test cases below to prove that all functions work
+// main functions used for function testing
+
+
+
+
 
 // int main()
 // {
@@ -120,5 +137,19 @@ void Time::printTime()
 //   time.printTime();
 //   time.addTime(30);
 //   time.printTime();
+//   return 0;
+// }
+
+// int main()
+// {
+//   Time time;
+//   for(int i=0; i<30; i++)
+//   {
+//     cout << "Subtracting 75 min" << endl;
+//     if(time.subtractTime(75))
+//     {
+//       cout << time.getTime() << endl;
+//     }
+//   }
 //   return 0;
 // }

@@ -2,6 +2,7 @@
 #include "Time.hpp"
 // #include "PriorityQueue.hpp"
 #include "Restaurant.hpp"
+#include <iomanip>
 using namespace std;
 
 
@@ -15,20 +16,14 @@ void printFoodMenu()
   cout << "4. Steak" << endl;
   cout << "5. Fish" << endl;
 }
-void printTurnMenu(Time clock)
-{
-  cout << "It is " << clock.getTime() << ". What would you like to do?" << endl;
-  cout << "1. Add a new group of customers" << endl;
-  cout << "2. Continue" << endl;
-  cout << "3. Close for the night" << endl;
-  cout << "4. Quit" << endl;
-}
+
 
 
 // PUBLIC CLASS FUNCTIONS
-Restaurant::Restaurant()
+Restaurant::Restaurant(string name)
 {
-  // initialize the menu
+  restaurantName = name;
+  // initialize all the food
   food[0].name = "Soup";
   food[1].name = "Salad";
   food[2].name = "Chicken";
@@ -44,12 +39,19 @@ Restaurant::Restaurant()
   food[2].inventory = 100;
   food[3].inventory = 100;
   food[4].inventory = 100;
-  clock.printTime();
+
+  cout << "Welcome to " << restaurantName << "! We open at 16:00 every day. It is currently " ;
+  clock.printTime(); cout << endl;
 
 }
 Restaurant::~Restaurant()
 {
-
+  endOfNight();
+  cout << restaurantName << " is now closed for business." << endl;
+}
+Time Restaurant::checkClock()
+{
+  return clock;
 }
 void Restaurant::addTime(int)
 {
@@ -59,11 +61,27 @@ void Restaurant::seatGroups()
 {
 
 }
+float Restaurant::getProfit()
+{
+  return nightlyProfit;
+}
+float Restaurant::getTotalProfit()
+{
+  return totalProfit;
+}
 
 // PRIVATE CLASS FUNCTIONS
 void Restaurant::endOfNight()
 {
-
+  cout << restaurantName << " has closed for the night -- ";
+  clock.printTime();
+  cout << "End of Night Inventory:" << endl;
+  for(int i=0; i<5; i++)
+  {
+    cout << "    " << food[i].name << ": " << food[i].inventory;
+  }
+  cout << endl;
+  cout << fixed << setprecision(2) << "Tonight's profit: $" << getProfit() << ", profit so far: $" << getTotalProfit() << endl << endl;
 }
 bool Restaurant::seatGroup()
 {

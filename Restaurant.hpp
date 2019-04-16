@@ -22,15 +22,18 @@ struct Table
 class Restaurant
 {
   public:
-    string restaurantName;
-    
-    Restaurant();
+
+    Restaurant(string);
     ~Restaurant();
     void addTime(int);
     void seatGroups();
     void takeOrders();
+    float getProfit();
+    float getTotalProfit();
+    Time checkClock();
 
   private:
+    string restaurantName;
     Time clock;
     // PriorityQueue waitList;
     int nightlyProfit = 0;
