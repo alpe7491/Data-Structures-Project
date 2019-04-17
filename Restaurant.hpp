@@ -35,6 +35,8 @@ class Restaurant
     Time checkClock();
     void checkInventory();
     void endOfNight();
+    void printCurrentlySeated();
+    void addToWaitList(string groupName, int groupSize, Time arrivalTime, bool reservation);
 
   private:
     string restaurantName;
@@ -43,9 +45,12 @@ class Restaurant
     int nightlyProfit = 0;
     int totalProfit = 0;
     Food food[5];
+    Table* fullTables = 0;
+    Table* emptyTables = 0;
 
     bool seatGroup();
     bool takeOrder();
+    void addNewTable(int tableNumber, int size);
 };
 
 #endif

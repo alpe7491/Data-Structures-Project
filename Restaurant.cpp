@@ -17,6 +17,53 @@ void printFoodMenu()
   cout << "5. Fish" << endl;
 }
 
+// sorts a full table into the linked list of full tables based on the time that the guests will leave
+// returns first table in the new sorted list
+Table* insertFullTable(Table* newTable, Table* linkedList)
+{
+  if(linkedList==0) return newTable; // if list was empty to begin with
+  Table* current = linkedList;
+  Table* previous = 0;
+  while(current!=0 && current->leaveTime.getTime()<newTable->leaveTime.getTime())
+  {
+    previous = current;
+    current = current->next;
+  }
+  newTable->next = current;
+  if(previous==0) // if the new table will be the first in the list
+  {
+    return newTable;
+  }
+  else
+  {
+    previous->next = newTable;
+    return linkedList;
+  }
+}
+
+// sorts an empty table in to the linked list of empty tables based on the table size
+// returns first table in the new sorted list
+Table* insertEmptyTable(Table* newTable, Table* linkedList)
+{
+  Table* current = linkedList;
+  Table* previous = 0;
+  while(current!=0 && current->size<newTable->size)
+  {
+    previous = current;
+    current = current->next;
+  }
+  newTable->next = current;
+  if(previous==0) // if the new table will be the first in the list
+  {
+    return newTable;
+  }
+  else
+  {
+    previous->next = newTable;
+    return linkedList;
+  }
+}
+
 
 
 // PUBLIC CLASS FUNCTIONS
@@ -41,6 +88,31 @@ Restaurant::Restaurant(string name)
   food[2].inventory = 100;
   food[3].inventory = 100;
   food[4].inventory = 100;
+  // initialize all the tables
+  addNewTable(1,8);
+  addNewTable(2,6);
+  addNewTable(3,6);
+  addNewTable(4,6);
+  addNewTable(5,6);
+  addNewTable(6,10);
+  addNewTable(7,10);
+  addNewTable(8,10);
+  addNewTable(9,12);
+  addNewTable(10,6);
+  addNewTable(11,6);
+  addNewTable(12,4);
+  addNewTable(13,4);
+  addNewTable(14,4);
+  addNewTable(15,4);
+  addNewTable(16,6);
+  addNewTable(17,6);
+  addNewTable(18,6);
+  addNewTable(19,8);
+  addNewTable(20,4);
+  addNewTable(21,4);
+  addNewTable(22,4);
+  addNewTable(23,4);
+  addNewTable(24,8);
 
   cout << "Welcome to " << restaurantName << "! We open at 16:00 every day. It is currently " ;
   clock.printTime(); cout << endl;
@@ -52,8 +124,36 @@ Restaurant::~Restaurant()
 {
   endOfNight();
   cout << restaurantName << " is now closed for business." << endl;
+  // delete all memory (empty waitlist, clear tables, delete table nodes)
 }
 
+// adds a new customer to the wait list
+void Restaurant::addToWaitList(string groupName, int groupSize, Time arrivalTime, bool reservation)
+{
+  if(waitList.isFull())
+  {
+    cout << "Wait list is full, cannot add a new group" << endl;
+  }
+  else
+  {
+    waitList.enqueue(groupName, groupSize, arrivalTime, reservation);
+    cout << groupName << ", your estimated wait time is " << 5*waitList.getSize() << " minutes" << endl << endl;
+  }
+}
+
+// prints a list of all the full tables
+void Restaurant::printCurrentlySeated()
+{
+  Table* current = fullTables;
+  while(current!=0)
+  {
+    cout << "Table #" << current->tableNumber << ": " << current->group->groupName << " leaving at " << current->leaveTime.getTime() << endl;
+    current = current->next;
+  }
+  cout << "Number of groups waiting to be seated: " << waitList.getSize() << endl << endl;
+}
+
+// prints how much food is left and what the current profits are
 void Restaurant::checkInventory()
 {
   cout << "Inventory:" << endl;
@@ -112,6 +212,15 @@ void Restaurant::endOfNight()
 bool Restaurant::seatGroup()
 {
 
+}
+
+// adds a new table, used in restaurant constructor
+void Restaurant::addNewTable(int tableNumber, int size)
+{
+  Table* newTable = new Table;
+  newTable->tableNumber = tableNumber;
+  newTable->size = size;
+  emptyTables = insertEmptyTable(newTable, emptyTables);
 }
 
 // int main()

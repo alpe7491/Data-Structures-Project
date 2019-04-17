@@ -19,9 +19,10 @@ void printTurnMenu(Time clock)
   cout << "It is " << clock.getTime() << ". What would you like to do?" << endl;
   cout << "1. Add a new group of customers" << endl;
   cout << "2. Check my inventory" << endl;
-  cout << "3. Continue" << endl;
-  cout << "4. Close for the night" << endl;
-  cout << "5. Quit" << endl;
+  cout << "3. See who is currently seated" << endl;
+  cout << "4. Continue" << endl;
+  cout << "5. Close for the night" << endl;
+  cout << "6. Quit" << endl;
 }
 
 int main()
@@ -37,16 +38,20 @@ int main()
       printTurnMenu(restaurant.checkClock());
       cin >> selection;
       cout << endl;
-    } while(!inputValidation(selection,1,5));
+    } while(!inputValidation(selection,1,6));
     switch(stoi(selection))
     {
       case 1:
         cout << "Adding a new customer" << endl;
+        restaurant.addToWaitList("Jenny", 8, restaurant.checkClock(), 0);
         break;
       case 2:
         restaurant.checkInventory();
         break;
       case 3:
+        restaurant.printCurrentlySeated();
+        break;
+      case 4:
         if(!restaurant.addTime(15)) restaurant.endOfNight();
         else
         {
@@ -56,12 +61,12 @@ int main()
           //serve food
         }
         break;
-      case 4:
+      case 5:
         restaurant.endOfNight();
         break;
       default:
         break;
     }
-  } while(selection!="5");
+  } while(selection!="6");
 
 }
