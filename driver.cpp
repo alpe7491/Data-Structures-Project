@@ -43,7 +43,11 @@ int main()
     {
       case 1:
         cout << "Adding a new customer" << endl;
-        restaurant.addToWaitList("Jenny", 8, restaurant.checkClock(), 0);
+        restaurant.addToWaitList("Charles", 8, restaurant.checkClock(), 0);
+        restaurant.addToWaitList("Ray", 8, restaurant.checkClock(), 0);
+        restaurant.addToWaitList("Amy", 8, restaurant.checkClock(), 0);
+        restaurant.addToWaitList("Jake", 8, restaurant.checkClock(), 0);
+        restaurant.addToWaitList("Rosa", 8, restaurant.checkClock(), 0);
         break;
       case 2:
         restaurant.checkInventory();
@@ -56,7 +60,7 @@ int main()
         else
         {
           //people pay and leave
-          //seat people
+          restaurant.seatGroups();
           //take orders
           //serve food
         }

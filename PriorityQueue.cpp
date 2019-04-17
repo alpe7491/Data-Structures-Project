@@ -76,13 +76,7 @@ void PriorityQueue::clearQue(){
 GroupNode *PriorityQueue::peek(){
   if(isEmpty())
   {
-    GroupNode *empty;
-    Time noTime;
-    empty->groupName = "";
-    empty->groupSize = 0;
-    empty->arrivalTime = noTime;
-    cout << "No parties are qued" << endl;
-    return empty;
+    return 0;
   }
   else
   {

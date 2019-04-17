@@ -48,7 +48,7 @@ class Restaurant
     Table* fullTables = 0;
     Table* emptyTables = 0;
 
-    bool seatGroup();
+    bool seatGroup(GroupNode* group);
     bool takeOrder();
     void addNewTable(int tableNumber, int size);
 };

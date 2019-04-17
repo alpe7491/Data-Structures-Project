@@ -21,7 +21,6 @@ void printFoodMenu()
 // returns first table in the new sorted list
 Table* insertFullTable(Table* newTable, Table* linkedList)
 {
-  if(linkedList==0) return newTable; // if list was empty to begin with
   Table* current = linkedList;
   Table* previous = 0;
   while(current!=0 && current->leaveTime.getTime()<newTable->leaveTime.getTime())
@@ -137,7 +136,7 @@ void Restaurant::addToWaitList(string groupName, int groupSize, Time arrivalTime
   else
   {
     waitList.enqueue(groupName, groupSize, arrivalTime, reservation);
-    cout << groupName << ", your estimated wait time is " << 5*waitList.getSize() << " minutes" << endl << endl;
+    cout << groupName << ", you are #" << waitList.getSize() << " on the wait list. You will be seated shortly." << endl << endl;
   }
 }
 
@@ -181,7 +180,14 @@ bool Restaurant::addTime(int numMins)
 // seats as many groups as possible from the front of the waitlist
 void Restaurant::seatGroups()
 {
-
+  GroupNode* group = waitList.peek();
+  while(group!=0 && seatGroup(group))
+  {
+    waitList.dequeue();
+    group = waitList.peek();
+  }
+  delete group;
+  cout << "all groups seated" << endl << endl;
 }
 
 // returns the profit for the night
@@ -209,9 +215,23 @@ void Restaurant::endOfNight()
 
 
 // seats a single group. If one is successfully seated, will return true so we can try to seat the next one too
-bool Restaurant::seatGroup()
+bool Restaurant::seatGroup(GroupNode* group)
 {
-
+  Table* current = emptyTables;
+  Table* previous = 0;
+  while(current!=0 && current->size < group->groupSize)
+  {
+    previous = current;
+    current = current->next;
+  }
+  if(current == 0) return false;
+  cout << group->groupName << " will be seated at table #" << current->tableNumber << endl;
+  current->group = group;
+  current->leaveTime = checkClock();
+  current->leaveTime.addTime(45);
+  previous->next = current->next;
+  fullTables = insertFullTable(current, fullTables);
+  return true;
 }
 
 // adds a new table, used in restaurant constructor
