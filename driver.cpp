@@ -29,25 +29,38 @@ int main()
 {
   string input;
   string selection;
+  string name;
+  string size;
   cout << "You are now the proud owner of a restaurant!" << endl;
-  cout << "What would you like to name your new restaurant?" << endl;
+  cout << "What would you like to name your new restaurant? ";
   getline(cin, input);
+  cout << endl;
   Restaurant restaurant(input);
   do {
     do {
       printTurnMenu(restaurant.checkClock());
-      cin >> selection;
+      getline(cin,selection);
       cout << endl;
     } while(!inputValidation(selection,1,6));
     switch(stoi(selection))
     {
       case 1:
-        cout << "Adding a new customer" << endl;
-        restaurant.addToWaitList("Charles", 8, restaurant.checkClock(), 0);
-        restaurant.addToWaitList("Ray", 8, restaurant.checkClock(), 0);
-        restaurant.addToWaitList("Amy", 8, restaurant.checkClock(), 0);
-        restaurant.addToWaitList("Jake", 8, restaurant.checkClock(), 0);
-        restaurant.addToWaitList("Rosa", 8, restaurant.checkClock(), 0);
+        cout << "Please enter the name of your group: ";
+        getline(cin, name);
+        do {
+          cout << "How big is your group (we accept groups of 1-12 people): ";
+          getline(cin,size);
+          cout << endl;
+        } while(!inputValidation(size,1,12));
+        restaurant.addToWaitList(name, stoi(size), restaurant.checkClock(), 0);
+
+
+
+        // restaurant.addToWaitList("Charles", 8, restaurant.checkClock(), 0);
+        // restaurant.addToWaitList("Ray", 8, restaurant.checkClock(), 0);
+        // restaurant.addToWaitList("Amy", 8, restaurant.checkClock(), 0);
+        // restaurant.addToWaitList("Jake", 8, restaurant.checkClock(), 0);
+        // restaurant.addToWaitList("Rosa", 8, restaurant.checkClock(), 0);
         break;
       case 2:
         restaurant.checkInventory();
@@ -59,10 +72,9 @@ int main()
         if(!restaurant.addTime(15)) restaurant.endOfNight();
         else
         {
-          //people pay and leave
+          restaurant.payBills();
           restaurant.seatGroups();
           //take orders
-          restaurant.takeOrders();
           //serve food
         }
         break;

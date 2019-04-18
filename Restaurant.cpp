@@ -7,9 +7,19 @@ using namespace std;
 
 
 // HELPER FUNCTIONS (NOT IN CLASS)
-void printFoodMenu()
+bool inputValidate(string input, int min, int max)
 {
-  cout << "What would you like to order?" << endl;
+  for(int i=0; i<input.length(); i++)
+  {
+    if(isdigit(input[i]) == false) return false;
+  }
+  if(stoi(input)<min || stoi(input)>max) return false;
+  else return true;
+}
+
+void printFoodMenu(string name)
+{
+  cout << name << ", what would you like to order?" << endl;
   cout << "1. Soup" << endl;
   cout << "2. Salad" << endl;
   cout << "3. Chicken" << endl;
@@ -143,6 +153,7 @@ void Restaurant::addToWaitList(string groupName, int groupSize, Time arrivalTime
 // prints a list of all the full tables
 void Restaurant::printCurrentlySeated()
 {
+  if(fullTables==0) cout << "There are currently no customers seated." << endl;
   Table* current = fullTables;
   while(current!=0)
   {
@@ -187,29 +198,7 @@ void Restaurant::seatGroups()
     group = waitList.peek();
   }
   delete group;
-  cout << "all groups seated" << endl << endl;
-}
-
-// seated parties will order food, this will use food count and add to their bill
-void Restaurant::takeOrders(){
-  string indivOrder;
-  float tableBill;
-  Table* temp = fullTables;
-  while(temp != nullptr){
-    printFoodMenu();
-    for(int i=0; i<temp->size; i++){
-      getline(cin, indivOrder);
-      for(int j=0; j<5; j++){
-        // Assuming user correctly inputs food choice
-        if(indivOrder == food[j].name){
-          food[j].inventory = food[j].inventory--;
-          tableBill = tableBill + food[j].price;
-        }
-      }
-    }
-    temp->bill = tableBill;
-    temp = temp->next;
-  }
+  // cout << "all groups seated" << endl << endl;
 }
 
 // returns the profit for the night
@@ -227,13 +216,41 @@ float Restaurant::getTotalProfit()
 // tallies totals for the night and starts the next day
 void Restaurant::endOfNight()
 {
-  cout << restaurantName << " has closed for the night -- ";
+  cout << restaurantName << " is closing for the night -- ";
   clock.printTime();
+  clock.addTime(60);
+  payBills();
+  waitList.clearQue();
   checkInventory();
   clock.startNewDay();
+  cout << "It is now ";
+  clock.printTime();
+  cout << endl;
+}
+
+// checks to see if it is time for any patrons to leave. If so, they pay their bill and vacaate their table
+void Restaurant::payBills()
+{
+  while(fullTables!=0 && fullTables->leaveTime.getTime()<=clock.getTime())
+  {
+    payBill(fullTables);
+  }
+  cout << endl;
 }
 
 // PRIVATE CLASS FUNCTIONS
+
+void Restaurant::payBill(Table* table)
+{
+  cout << table->group->groupName << ", thank you for eating with us today! Your bill is $" << table->bill << endl;
+  nightlyProfit+=table->bill;
+  totalProfit+=table->bill;
+  table->bill = 0;
+  delete table->group;
+  table->group = 0;
+  fullTables = table->next;
+  emptyTables = insertEmptyTable(table, emptyTables);
+}
 
 
 // seats a single group. If one is successfully seated, will return true so we can try to seat the next one too
@@ -247,12 +264,14 @@ bool Restaurant::seatGroup(GroupNode* group)
     current = current->next;
   }
   if(current == 0) return false;
-  cout << group->groupName << " will be seated at table #" << current->tableNumber << endl;
+  cout << "Currently seating " << group->groupName << " at table #" << current->tableNumber << endl;
   current->group = group;
   current->leaveTime = checkClock();
   current->leaveTime.addTime(45);
-  previous->next = current->next;
+  if(previous==0) emptyTables = current->next;
+  else previous->next = current->next;
   fullTables = insertFullTable(current, fullTables);
+  takeOrder(current);
   return true;
 }
 
@@ -264,6 +283,34 @@ void Restaurant::addNewTable(int tableNumber, int size)
   newTable->size = size;
   emptyTables = insertEmptyTable(newTable, emptyTables);
 }
+
+// seated parties will order food, this will use food count and add to their bill
+void Restaurant::takeOrder(Table* table){
+  string input;
+  float tableBill;
+  printFoodMenu(table->group->groupName);
+  for(int i=0; i<table->group->groupSize; i++)
+  {
+    do {
+      cout << "Person " << i+1 << ": ";
+      getline(cin, input);
+    } while(!inputValidate(input,1,5));
+    cout << food[stoi(input)-1].name << endl;
+    food[stoi(input)-1].inventory--;
+    tableBill = tableBill + food[stoi(input)-1].price;
+  }
+  //   for(int j=0; j<5; j++){
+  //     // Assuming user correctly inputs food choice
+  //     if(indivOrder == food[j].name){
+  //       food[j].inventory = food[j].inventory--;
+  //       tableBill = tableBill + food[j].price;
+  //     }
+  //   }
+  // }
+  table->bill = tableBill;
+  cout << endl;
+}
+
 
 // int main()
 // {

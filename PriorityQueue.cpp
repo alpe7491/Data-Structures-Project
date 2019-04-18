@@ -58,7 +58,7 @@ void PriorityQueue::dequeue(){
 void PriorityQueue::clearQue(){
   if(isEmpty())
   {
-    cout << "Heap empty, cannot dequeue" << endl;
+    // cout << "Heap empty, cannot dequeue" << endl;
     return;
   }
   else

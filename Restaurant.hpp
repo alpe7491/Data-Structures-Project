@@ -37,6 +37,7 @@ class Restaurant
     void endOfNight();
     void printCurrentlySeated();
     void addToWaitList(string groupName, int groupSize, Time arrivalTime, bool reservation);
+    void payBills();
 
   private:
     string restaurantName;
@@ -49,8 +50,9 @@ class Restaurant
     Table* emptyTables = 0;
 
     bool seatGroup(GroupNode* group);
-    bool takeOrder();
+    void takeOrder(Table* table);
     void addNewTable(int tableNumber, int size);
+    void payBill(Table* table);
 };
 
 #endif
