@@ -62,6 +62,7 @@ int main()
           //people pay and leave
           restaurant.seatGroups();
           //take orders
+          restaurant.takeOrders();
           //serve food
         }
         break;
