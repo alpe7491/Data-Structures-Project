@@ -9,6 +9,7 @@ using namespace std;
 // HELPER FUNCTIONS (NOT IN CLASS)
 bool inputValidate(string input, int min, int max)
 {
+  if(input == "") return false;
   for(int i=0; i<input.length(); i++)
   {
     if(isdigit(input[i]) == false) return false;
