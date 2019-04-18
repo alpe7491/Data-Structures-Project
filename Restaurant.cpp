@@ -190,6 +190,28 @@ void Restaurant::seatGroups()
   cout << "all groups seated" << endl << endl;
 }
 
+// seated parties will order food, this will use food count and add to their bill
+void Restaurant::takeOrders(){
+  string indivOrder;
+  float tableBill;
+  Table* temp = fullTables;
+  while(temp != nullptr){
+    printFoodMenu();
+    for(int i=0; i<temp->size; i++){
+      getline(cin, indivOrder);
+      for(int j=0; j<5; j++){
+        // Assuming user correctly inputs food choice
+        if(indivOrder == food[j].name){
+          food[j].inventory = food[j].inventory--;
+          tableBill = tableBill + food[j].price;
+        }
+      }
+    }
+    temp->bill = tableBill;
+    temp = temp->next;
+  }
+}
+
 // returns the profit for the night
 float Restaurant::getProfit()
 {
