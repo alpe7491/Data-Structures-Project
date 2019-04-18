@@ -20,11 +20,11 @@ bool inputValidate(string input, int min, int max)
 void printFoodMenu(string name)
 {
   cout << name << ", what would you like to order?" << endl;
-  cout << "1. Soup" << endl;
-  cout << "2. Salad" << endl;
-  cout << "3. Chicken" << endl;
-  cout << "4. Steak" << endl;
-  cout << "5. Fish" << endl;
+  cout << "1. Soup - $4.50" << endl;
+  cout << "2. Salad - $4.00" << endl;
+  cout << "3. Chicken - $6.00" << endl;
+  cout << "4. Steak - $8.00" << endl;
+  cout << "5. Fish - $8.50" << endl;
 }
 
 // sorts a full table into the linked list of full tables based on the time that the guests will leave
@@ -222,6 +222,7 @@ void Restaurant::endOfNight()
   payBills();
   waitList.clearQue();
   checkInventory();
+  nightlyProfit = 0;
   clock.startNewDay();
   cout << "It is now ";
   clock.printTime();
