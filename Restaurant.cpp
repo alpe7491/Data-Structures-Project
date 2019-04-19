@@ -93,6 +93,11 @@ Restaurant::Restaurant(string name)
   food[2].price = 6.00;
   food[3].price = 8.00;
   food[4].price = 8.50;
+  food[0].cost = 2.00;
+  food[1].cost = 2.50;
+  food[2].cost = 4.00;
+  food[3].cost = 5.00;
+  food[4].cost = 5.50;
   food[0].inventory = 100;
   food[1].inventory = 100;
   food[2].inventory = 100;
@@ -217,6 +222,7 @@ float Restaurant::getTotalProfit()
 // tallies totals for the night and starts the next day
 void Restaurant::endOfNight()
 {
+  string input;
   cout << restaurantName << " is closing for the night -- ";
   clock.printTime();
   clock.addTime(60);
@@ -224,6 +230,10 @@ void Restaurant::endOfNight()
   waitList.clearQue();
   checkInventory();
   nightlyProfit = 0;
+  cout << "Would you like to buy more food for tomorrow? (Y/N)";
+  getline(cin, input);
+  cout << endl;
+  if(input=="Y" || input=="y" || input=="yes" || input=="Yes" || input=="YES") buyFood();
   clock.startNewDay();
   cout << "It is now ";
   clock.printTime();
@@ -301,16 +311,37 @@ void Restaurant::takeOrder(Table* table){
     food[stoi(input)-1].inventory--;
     tableBill = tableBill + food[stoi(input)-1].price;
   }
-  //   for(int j=0; j<5; j++){
-  //     // Assuming user correctly inputs food choice
-  //     if(indivOrder == food[j].name){
-  //       food[j].inventory = food[j].inventory--;
-  //       tableBill = tableBill + food[j].price;
-  //     }
-  //   }
-  // }
   table->bill = tableBill;
   cout << endl;
+}
+
+void Restaurant::buyFood()
+{
+  string input;
+  string amount;
+  do {
+    cout << "You have $" << fixed << setprecision(2) << totalProfit << ". What would you like to buy more of?" << endl;
+    cout << "1. Soup - $2.00" << endl;
+    cout << "2. Salad - $2.50" << endl;
+    cout << "3. Chicken - $4.00" << endl;
+    cout << "4. Steak - $5.00" << endl;
+    cout << "5. Fish - $5.50" << endl;
+    cout << "6. I am done buying food." << endl;
+    getline(cin,input);
+    if(inputValidate(input,1,5))
+    {
+      cout << "How much " << food[stoi(input)-1].name << " would you like to buy? ";
+      getline(cin, amount);
+      if(inputValidate(amount,0,10000) && stoi(amount)*food[stoi(input)].cost < totalProfit)
+      {
+        // cout <<  food[stoi(input)-1].name << ": " << food[stoi(input)-1].inventory << ", $" << totalProfit << endl;
+        food[stoi(input)-1].inventory += stoi(amount);
+        totalProfit -= stoi(amount)*food[stoi(input)-1].cost;
+        // cout <<  food[stoi(input)-1].name << ": " << food[stoi(input)-1].inventory << ", $" << totalProfit << endl;
+      }
+      else cout << "Cannot purchase. Either you did not enter a valid number, or you do not have enough money." << endl;
+    }
+  } while(input!="6");
 }
 
 

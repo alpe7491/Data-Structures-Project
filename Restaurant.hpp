@@ -10,6 +10,7 @@ struct Food
   string name;
   int inventory;
   float price;
+  float cost;
 };
 
 struct Table
@@ -53,6 +54,7 @@ class Restaurant
     void takeOrder(Table* table);
     void addNewTable(int tableNumber, int size);
     void payBill(Table* table);
+    void buyFood();
 };
 
 #endif
