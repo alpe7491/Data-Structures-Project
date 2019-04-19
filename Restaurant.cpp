@@ -321,11 +321,11 @@ void Restaurant::buyFood()
   string amount;
   do {
     cout << "You have $" << fixed << setprecision(2) << totalProfit << ". What would you like to buy more of?" << endl;
-    cout << "1. Soup - $2.00" << endl;
-    cout << "2. Salad - $2.50" << endl;
-    cout << "3. Chicken - $4.00" << endl;
-    cout << "4. Steak - $5.00" << endl;
-    cout << "5. Fish - $5.50" << endl;
+    cout << "1. Soup - $2.00 (You currently have " << food[0].inventory << ")"<< endl;
+    cout << "2. Salad - $2.50 (You currently have " << food[1].inventory << ")"<< endl;
+    cout << "3. Chicken - $4.00 (You currently have " << food[2].inventory << ")"<< endl;
+    cout << "4. Steak - $5.00 (You currently have " << food[3].inventory << ")"<< endl;
+    cout << "5. Fish - $5.50 (You currently have " << food[4].inventory << ")"<< endl;
     cout << "6. I am done buying food." << endl;
     getline(cin,input);
     if(inputValidate(input,1,5))
