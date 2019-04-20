@@ -332,7 +332,7 @@ void Restaurant::buyFood()
     {
       cout << "How much " << food[stoi(input)-1].name << " would you like to buy? ";
       getline(cin, amount);
-      if(inputValidate(amount,0,10000) && stoi(amount)*food[stoi(input)].cost < totalProfit)
+      if(inputValidate(amount,0,10000) && stoi(amount)*food[stoi(input)-1].cost < totalProfit)
       {
         // cout <<  food[stoi(input)-1].name << ": " << food[stoi(input)-1].inventory << ", $" << totalProfit << endl;
         food[stoi(input)-1].inventory += stoi(amount);
