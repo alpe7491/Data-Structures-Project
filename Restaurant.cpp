@@ -220,6 +220,9 @@ float Restaurant::getTotalProfit()
 }
 
 // tallies totals for the night and starts the next day
+// all customers currently seated are allowed to finish, pay their bills, and leave
+// all customers who have not yet been seated must leave
+// the user is asked if they would like to buy more food for the next day, and if yes, buyFood() is called
 void Restaurant::endOfNight()
 {
   string input;
@@ -252,6 +255,8 @@ void Restaurant::payBills()
 
 // PRIVATE CLASS FUNCTIONS
 
+// takes a table pointer. Adds bill from that table to total profit, frees memory for group seated there
+// moves table from full list to empty list
 void Restaurant::payBill(Table* table)
 {
   cout << table->group->groupName << ", thank you for eating with us today! Your bill is $" << table->bill << endl;
@@ -315,6 +320,8 @@ void Restaurant::takeOrder(Table* table){
   cout << endl;
 }
 
+// called at the end of each day, allows management to order more food if/when the restaurant runs out
+// takes user input, changes food inventory and total profit
 void Restaurant::buyFood()
 {
   string input;
@@ -342,12 +349,5 @@ void Restaurant::buyFood()
       else cout << "Cannot purchase. Either you did not enter a valid number, or you do not have enough money." << endl;
     }
   } while(input!="6");
+  cout << endl;
 }
-
-
-// int main()
-// {
-//   cout << "Hello World" << endl;
-//   Restaurant restaurant;
-//   return 0;
-// }

@@ -2,8 +2,9 @@
 #include "Restaurant.hpp"
 #include "Time.hpp"
 #include <string>
-//#include "PriorityQueue.hpp"
 
+
+// validates user input to make sure that it is an integer between min and max
 bool inputValidation(string input, int min, int max)
 {
   if(input == "") return false;
@@ -15,6 +16,7 @@ bool inputValidation(string input, int min, int max)
   else return true;
 }
 
+// prints the menu at the beginning of every turn so the user can choose what to do
 void printTurnMenu(Time clock)
 {
   cout << "It is " << clock.getTime() << ". What would you like to do?" << endl;
@@ -45,7 +47,7 @@ int main()
     } while(!inputValidation(selection,1,6));
     switch(stoi(selection))
     {
-      case 1:
+      case 1: // add new customers
         cout << "Please enter the name of your group: ";
         getline(cin, name);
         do {
@@ -54,37 +56,27 @@ int main()
           cout << endl;
         } while(!inputValidation(size,1,12));
         restaurant.addToWaitList(name, stoi(size), restaurant.checkClock(), 0);
-
-
-
-        // restaurant.addToWaitList("Charles", 8, restaurant.checkClock(), 0);
-        // restaurant.addToWaitList("Ray", 8, restaurant.checkClock(), 0);
-        // restaurant.addToWaitList("Amy", 8, restaurant.checkClock(), 0);
-        // restaurant.addToWaitList("Jake", 8, restaurant.checkClock(), 0);
-        // restaurant.addToWaitList("Rosa", 8, restaurant.checkClock(), 0);
         break;
-      case 2:
+      case 2: // check inventory
         restaurant.checkInventory();
         break;
-      case 3:
+      case 3: // see who is currently seated
         restaurant.printCurrentlySeated();
         break;
-      case 4:
+      case 4: // continue, if it passes midnight, the day automatically ends
         if(!restaurant.addTime(15)) restaurant.endOfNight();
         else
         {
           restaurant.payBills();
           restaurant.seatGroups();
-          //take orders
-          //serve food
         }
         break;
-      case 5:
+      case 5: // end the day voluntarily
         restaurant.endOfNight();
         break;
-      default:
+      default: // exit the program
         break;
     }
   } while(selection!="6");
-
+  // Restaurant destructor takes care of all of the exit procedures
 }
